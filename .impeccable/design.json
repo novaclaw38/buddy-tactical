@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-05T00:00:00Z",
+  "title": "Design System: Buddy — Tactical Academy",
+  "extensions": {
+    "colorMeta": {
+      "command-black": {
+        "role": "neutral",
+        "displayName": "Command Black",
+        "canonical": "#0a0a0b",
+        "tonalRamp": ["#0a0a0b", "#101014", "#1a1a1f", "#2a2a30", "#454550", "#6b6b78", "#9d9dab", "#e4e4ea"]
+      },
+      "command-black-raised": {
+        "role": "neutral",
+        "displayName": "Command Black Raised",
+        "canonical": "#101014",
+        "tonalRamp": ["#0a0a0b", "#101014", "#1a1a1f", "#2a2a30", "#454550", "#6b6b78", "#9d9dab", "#e4e4ea"]
+      },
+      "tactical-teal": {
+        "role": "primary",
+        "displayName": "Tactical Teal",
+        "canonical": "#00f5ff",
+        "tonalRamp": ["#00262a", "#003c42", "#0a3c40", "#00707a", "#00a8b8", "#00d6e6", "#5df2fb", "#c2fbff"]
+      },
+      "tactical-teal-dim": {
+        "role": "primary",
+        "displayName": "Tactical Teal Dim",
+        "canonical": "#0a3c40",
+        "tonalRamp": ["#00262a", "#003c42", "#0a3c40", "#00707a", "#00a8b8", "#00d6e6", "#5df2fb", "#c2fbff"]
+      },
+      "alert-orange": {
+        "role": "secondary",
+        "displayName": "Alert Orange",
+        "canonical": "#ff8a00",
+        "tonalRamp": ["#3d2200", "#663900", "#995700", "#cc7300", "#ff8a00", "#ffab4d", "#ffcb8f", "#ffe8cc"]
+      }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "Page-level titles." },
+      "title": { "displayName": "Title", "purpose": "In-context section and screen titles." },
+      "body": { "displayName": "Body", "purpose": "Form labels, mission transcript, standard copy." }
+    },
+    "shadows": [
+      { "name": "orb-core-glow", "value": "0 6px 24px -4px #00f5ff", "purpose": "The Command Orb's core — the system's only elevation at rest. Reference shape for future glow/lift work." }
+    ],
+    "motion": [
+      { "name": "scanline-drift", "value": "8s linear infinite", "purpose": "Ambient CRT scanline texture over the whole viewport, always running." },
+      { "name": "terminal-reveal", "value": "steps(40, end), ~18ms per character, capped 2.4s", "purpose": "Typewriter reveal on the newest mission-transcript line only." },
+      { "name": "system-reboot-wipe", "value": "900ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "One-time full-screen scanline wipe triggered on rank-up." },
+      { "name": "orb-response", "value": "150ms ease-out (rings), 100ms ease-out (core)", "purpose": "Command Orb ring/core reaction to live voice amplitude." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Teal)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The system's own action — Log In, Confirm PIN.",
+      "html": "<button class=\"ds-btn-primary\">Log In</button>",
+      "css": ".ds-btn-primary { position: relative; background: transparent; color: #00f5ff; border: 1px solid #00f5ff; padding: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; transition: background-color 0.2s; } .ds-btn-primary::before, .ds-btn-primary::after { content: ''; position: absolute; width: 10px; height: 10px; border-color: #00f5ff; pointer-events: none; } .ds-btn-primary::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; } .ds-btn-primary::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; } .ds-btn-primary:hover { background-color: #0a3c40; } .ds-btn-primary:focus-visible { outline: 2px solid #ff8a00; }"
+    },
+    {
+      "name": "Secondary Button (Orange)",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The child/parent-attention action — Sign Up, Create Profile, Hold to Talk.",
+      "html": "<button class=\"ds-btn-secondary\">Sign Up</button>",
+      "css": ".ds-btn-secondary { position: relative; background: transparent; color: #ff8a00; border: 1px solid #ff8a00; padding: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; transition: background-color 0.2s; } .ds-btn-secondary::before, .ds-btn-secondary::after { content: ''; position: absolute; width: 10px; height: 10px; border-color: #ff8a00; pointer-events: none; } .ds-btn-secondary::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; } .ds-btn-secondary::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; } .ds-btn-secondary:hover { background-color: #101014; } .ds-btn-secondary:focus-visible { outline: 2px solid #00f5ff; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Email, password, name, and PIN fields.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Enter PIN\" />",
+      "css": ".ds-input { position: relative; background: #101014; color: #00f5ff; border: 1px solid #00f5ff; padding: 12px; font-family: 'JetBrains Mono', ui-monospace, monospace; } .ds-input::placeholder { color: rgba(0, 245, 255, 0.5); } .ds-input:focus-visible { outline: 2px solid #ff8a00; }"
+    },
+    {
+      "name": "Command Orb",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The AI avatar and the system's only glowing element at rest — three concentric layers reacting to live voice amplitude.",
+      "html": "<div class=\"ds-orb\"><div class=\"ds-orb-ring-outer\"></div><div class=\"ds-orb-ring-inner\"></div><div class=\"ds-orb-core\"></div></div>",
+      "css": ".ds-orb { position: relative; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; } .ds-orb-ring-outer { position: absolute; inset: 0; border-radius: 9999px; border: 1px solid rgba(0, 245, 255, 0.4); } .ds-orb-ring-inner { position: absolute; inset: 12px; border-radius: 9999px; border: 1px solid rgba(0, 245, 255, 0.25); } .ds-orb-core { width: 64px; height: 64px; border-radius: 9999px; background: #00f5ff; box-shadow: 0 6px 24px -4px #00f5ff; }"
+    },
+    {
+      "name": "Mission Transcript Line",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "One turn of dialogue, prefixed with the speaker's role in caps.",
+      "html": "<p class=\"ds-transcript-line ds-transcript-commander\">COMMANDER: Cadet, report your status.</p>",
+      "css": ".ds-transcript-line { font-family: 'JetBrains Mono', ui-monospace, monospace; white-space: pre-wrap; overflow: hidden; } .ds-transcript-commander { color: #00f5ff; } .ds-transcript-cadet { color: #ff8a00; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Mission Control Deck",
+    "overview": "Buddy's interface reads as scanned instrumentation inside a command deck, not a children's app dressed up in dark mode. Every functional control wears a bracketed HUD-frame — the corner marks of a targeting reticle or an equipment readout — and the whole page sits under a constant, faint CRT scanline drift, as if the child is looking at Buddy through a real cockpit display rather than a phone screen. There is exactly one glowing object on any given screen at rest: the Command Orb. Everything else stays flat, square-cornered, and quiet, so that when something does light up or expand, it reads as instrumentation actually responding, not decoration.\n\nThe system currently has almost no elevation outside the Orb's core glow (0 6px 24px -4px of Tactical Teal). That glow is a confirmed direction to extend, not a one-off: further work should give other key moments of feedback (control hover/active states, the System Reboot transition) their own deliberate glow or lift, using the Orb's soft, colored, offset shadow as the reference — never a flat zero-offset halo.\n\nTwo colors do all the signaling: Tactical Teal for the system's own voice (the Commander, primary actions, focus/system state) and Alert Orange for anything that needs the child's attention (warnings, the talk control, PIN errors). Command Black is not a background color choice — it is the committed world. This is not a dark-mode variant of a lighter design; there is no light mode.",
+    "keyCharacteristics": [
+      "Bracketed HUD-frame corners on every functional control, never a plain box border",
+      "Command Black is the only background — no light-mode counterpart exists",
+      "Exactly one glowing element at rest (the Orb); other glow/lift is confirmed direction, not yet implemented elsewhere",
+      "Square corners everywhere except the Orb and the circular \"Hold to Talk\" control",
+      "Single monospace voice (JetBrains Mono) end to end — no secondary display or body face",
+      "A constant, near-invisible CRT scanline drift over the entire viewport"
+    ],
+    "rules": [
+      { "name": "The One Voice, One Alert Rule", "body": "Teal means the system talking to the child (Commander, primary controls, focus). Orange means the child needs to act or something needs attention (talk button, errors). A control is never styled in both at once.", "section": "colors" },
+      { "name": "The Terminal Prefix Rule", "body": "Mission transcript lines are always prefixed with the speaker's role in caps (COMMANDER: / CADET:) before the message — never shown as an unlabeled chat bubble.", "section": "typography" },
+      { "name": "The One Glow Rule (currently)", "body": "At present only the Orb carries elevation; every other surface stays flat. This is being deliberately extended — new glow/lift should follow the Orb's offset, colored-shadow shape, not invent a flat drop-shadow language.", "section": "elevation" },
+      { "name": "The Circle Is Sacred Rule", "body": "Circular shape is reserved for the Orb and the talk control — the two things the child directly speaks to or through. No other element may borrow the circular form.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do wrap every functional control in the hud-frame bracket treatment — it is the system's substitute for both rounded corners and elevation.",
+      "Do keep the circular form reserved for the Orb and the talk control only.",
+      "Do use Tactical Teal for the system's own voice/actions and Alert Orange for anything requiring the child's attention — never mix the two on one control.",
+      "Do extend the Orb's soft offset colored glow, not a flat drop-shadow, when adding depth to other elements.",
+      "Do prefix every transcript line with the speaker's role in caps before the message."
+    ],
+    "donts": [
+      "Don't introduce border-radius on any container, input, or button other than the Orb and the talk control.",
+      "Don't add a light-mode variant — Command Black is the only ground this system has.",
+      "Don't use a second typeface for headings or body — JetBrains Mono carries the entire hierarchy.",
+      "Don't replay the terminal-reveal typewriter effect on a transcript line that was already visible before the current render.",
+      "Don't use a flat, zero-offset colored halo as a shadow — every glow in this system carries a real offset and blur, following the Orb core's shape."
+    ]
+  }
+}
