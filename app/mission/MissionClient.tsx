@@ -24,6 +24,7 @@ export function MissionClient({ childName, course }: { childName: string; course
   const [rank, setRank] = useState<number | null>(null);
   const [amplitude, setAmplitude] = useState(0);
   const [micDenied, setMicDenied] = useState(false);
+  const [showReboot, setShowReboot] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const holdStartedAtRef = useRef<number>(0);
@@ -42,6 +43,9 @@ export function MissionClient({ childName, course }: { childName: string; course
 
     setTurns((prev) => [...prev, { role: "orb", content: data.orb_text }]);
     setRank(data.rank);
+    if (data.ranked_up) {
+      setShowReboot(true);
+    }
 
     if (data.audio_base64) {
       const audio = new Audio(`data:audio/wav;base64,${data.audio_base64}`);
@@ -79,14 +83,34 @@ export function MissionClient({ childName, course }: { childName: string; course
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
-      <h1 className="text-xl">Cadet {childName}{rank !== null ? ` — Rank ${rank}` : ""}</h1>
+    <main className="relative flex min-h-screen flex-col items-center justify-center gap-8 p-8">
+      {showReboot && (
+        <div
+          className="system-reboot-overlay"
+          onAnimationEnd={() => setShowReboot(false)}
+          aria-hidden="true"
+        />
+      )}
+      <h1 className="text-xl tracking-[-0.02em]">
+        Cadet {childName}
+        {rank !== null ? ` — Rank ${rank}` : ""}
+      </h1>
       <CommandOrb amplitude={amplitude} />
       <MissionTranscript turns={turns} />
       {micDenied ? (
-        <div className="flex gap-2">
-          <button onClick={() => submitTurn(null, "A")} className="p-2 border border-[color:var(--tactical-teal)]">Option A</button>
-          <button onClick={() => submitTurn(null, "B")} className="p-2 border border-[color:var(--tactical-teal)]">Option B</button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => submitTurn(null, "A")}
+            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+          >
+            Option A
+          </button>
+          <button
+            onClick={() => submitTurn(null, "B")}
+            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+          >
+            Option B
+          </button>
         </div>
       ) : (
         <button
@@ -100,7 +124,7 @@ export function MissionClient({ childName, course }: { childName: string; course
             event.preventDefault();
             stopRecording();
           }}
-          className="p-4 rounded-full border-2 border-[color:var(--alert-orange)]"
+          className="hud-frame rounded-full px-8 py-4 text-[color:var(--alert-orange)] border-[color:var(--alert-orange)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors active:scale-95"
         >
           Hold to Talk
         </button>

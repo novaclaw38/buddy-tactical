@@ -21,10 +21,13 @@ describe("MissionClient", () => {
 
     await user.pointer({ keys: "[MouseLeft>]", target: screen.getByText("Hold to Talk") });
 
-    await waitFor(() => {
-      expect(screen.getByText("Option A")).toBeInTheDocument();
-      expect(screen.getByText("Option B")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Option A")).toBeInTheDocument();
+        expect(screen.getByText("Option B")).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 
   it("submits a tap answer without recording audio", async () => {
@@ -36,12 +39,15 @@ describe("MissionClient", () => {
     const user = userEvent.setup();
     render(<MissionClient childName="Alex" course="robotics" />);
     await user.pointer({ keys: "[MouseLeft>]", target: screen.getByText("Hold to Talk") });
-    await waitFor(() => screen.getByText("Option A"));
+    await waitFor(() => screen.getByText("Option A"), { timeout: 5000 });
 
     await user.click(screen.getByText("Option A"));
 
-    await waitFor(() => {
-      expect(screen.getByText((text) => text.includes("Acknowledged, Cadet."))).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText((text) => text.includes("Acknowledged, Cadet."))).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
   });
 });

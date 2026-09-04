@@ -1,29 +1,161 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
   --command-black: #0a0a0b;
+  --command-black-raised: #101014;
   --tactical-teal: #00f5ff;
+  --tactical-teal-dim: #0a3c40;
   --alert-orange: #ff8a00;
+  --hud-line: color-mix(in srgb, var(--tactical-teal) 35%, transparent);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--command-black);
+  --color-foreground: var(--tactical-teal);
+  --font-sans: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scrollbar-color: var(--tactical-teal) var(--command-black);
+}
+
+::selection {
+  background-color: var(--tactical-teal);
+  color: var(--command-black);
 }
 
 body {
   background-color: var(--command-black);
   color: var(--tactical-teal);
   font-family: "JetBrains Mono", ui-monospace, monospace;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Constant CRT scanline overlay: a repeating horizontal gradient drifting
+   downward, layered above content but inert to pointer events. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--tactical-teal) 5%, transparent) 0px,
+    transparent 1px,
+    transparent 3px
+  );
+  background-size: 100% 3px;
+  animation: scanline-drift 8s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes scanline-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+/* Terminal-reveal: a steps() clip-path wipe gives a monospace typewriter
+   feel without animating layout or requiring per-character JS state. */
+@keyframes terminal-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.animate-terminal-reveal {
+  animation-name: terminal-reveal;
+  animation-timing-function: steps(40, end);
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-terminal-reveal {
+    animation: none;
+  }
+}
+
+/* HUD-mask border: a bracketed frame that reads as scanned instrumentation
+   around a functional control, without altering its box model. */
+.hud-frame {
+  position: relative;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.hud-frame::before,
+.hud-frame::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--tactical-teal);
+  pointer-events: none;
+}
+
+.hud-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.hud-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Full-screen scanline-wipe transition, triggered on rank-up. */
+@keyframes system-reboot-wipe {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 1;
+  }
+  60% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+
+.system-reboot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+      to bottom,
+      var(--tactical-teal) 0px,
+      var(--tactical-teal) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    var(--command-black);
+  animation: system-reboot-wipe 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-reboot-overlay {
+    animation-duration: 1ms;
+  }
 }

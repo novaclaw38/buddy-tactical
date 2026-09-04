@@ -17,9 +17,9 @@ export default async function ProfilesPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
-      <h1 className="text-2xl">Select Your Cadet</h1>
+      <h1 className="text-2xl tracking-[-0.02em]">Select Your Cadet</h1>
       <ProfilePicker children={children ?? []} />
-      <h2 className="text-lg">Add a New Cadet</h2>
+      <h2 className="text-lg tracking-[-0.02em] text-[color:var(--tactical-teal)]/80">Add a New Cadet</h2>
       <ChildProfileForm />
     </main>
   );

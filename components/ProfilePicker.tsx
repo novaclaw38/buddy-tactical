@@ -15,15 +15,15 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
 
   if (!selected) {
     return (
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap justify-center">
         {children.map((child) => (
           <button
             key={child.id}
             onClick={() => setSelected(child)}
-            className="flex flex-col items-center gap-2 p-4 border border-[color:var(--tactical-teal)]"
+            className="hud-frame border-[color:var(--tactical-teal)] flex flex-col items-center gap-2 p-4 hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
           >
             <span className="text-4xl">{child.avatar}</span>
-            <span>{child.name}</span>
+            <span className="tracking-[-0.02em]">{child.name}</span>
           </button>
         ))}
       </div>
@@ -41,11 +41,32 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
       }}
       className="flex flex-col gap-3 items-center"
     >
-      <p>Enter PIN for {selected.name}</p>
-      <input name="pin" type="password" inputMode="numeric" placeholder="Enter PIN" className="p-2 bg-black border border-[color:var(--tactical-teal)]" />
-      {error && <p className="text-[color:var(--alert-orange)]">{error}</p>}
-      <button type="submit" className="p-2 border border-[color:var(--tactical-teal)]">Confirm</button>
-      <button type="button" onClick={() => setSelected(null)} className="text-sm underline">Back</button>
+      <p className="tracking-[-0.02em]">Enter PIN for {selected.name}</p>
+      <input
+        name="pin"
+        type="password"
+        inputMode="numeric"
+        placeholder="Enter PIN"
+        className="hud-frame border-[color:var(--tactical-teal)] bg-[color:var(--command-black-raised)] p-2 text-center text-[color:var(--tactical-teal)] placeholder:text-[color:var(--tactical-teal)]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
+      />
+      {error && (
+        <p role="alert" className="text-[color:var(--alert-orange)]">
+          {error}
+        </p>
+      )}
+      <button
+        type="submit"
+        className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+      >
+        Confirm
+      </button>
+      <button
+        type="button"
+        onClick={() => setSelected(null)}
+        className="text-sm underline decoration-[color:var(--tactical-teal)]/60 hover:text-[color:var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
+      >
+        Back
+      </button>
     </form>
   );
 }
