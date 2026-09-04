@@ -1599,7 +1599,111 @@ git commit -m "feat: wire up mission page voice loop with touch support and min-
 
 ---
 
-### Task 11: Apply impeccable design pass
+### Task 11: RLS cross-parent isolation test
+
+**Files:**
+- Create: `tests/supabase/rls.test.ts`
+- Create: `.env.test.example`
+
+**Interfaces:**
+- Consumes: `supabase/migrations/0001_init.sql` from Task 2; requires a real (local or hosted) Supabase project with the migration applied — this test hits actual Postgres via RLS, not a mock, since RLS is a database-enforced guarantee that mocks can't verify
+- Produces: automated proof that Parent A cannot read or write Parent B's `children` or `mission_progress` rows
+
+- [ ] **Step 1: Document required test environment variables**
+
+`.env.test.example`:
+```
+SUPABASE_TEST_URL=
+SUPABASE_TEST_ANON_KEY=
+```
+
+Note: point these at a local Supabase instance (`supabase start`) or a disposable test project — never a production project, since this test creates and deletes real auth users.
+
+- [ ] **Step 2: Write the RLS isolation test**
+
+`tests/supabase/rls.test.ts`:
+```typescript
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { createClient } from "@supabase/supabase-js";
+
+const url = process.env.SUPABASE_TEST_URL;
+const anonKey = process.env.SUPABASE_TEST_ANON_KEY;
+
+const describeIfConfigured = url && anonKey ? describe : describe.skip;
+
+describeIfConfigured("RLS: cross-parent isolation", () => {
+  let parentAClient: ReturnType<typeof createClient>;
+  let parentBClient: ReturnType<typeof createClient>;
+  let parentAChildId: string;
+
+  beforeAll(async () => {
+    parentAClient = createClient(url!, anonKey!);
+    parentBClient = createClient(url!, anonKey!);
+
+    const emailA = `rls-test-a-${Date.now()}@example.com`;
+    const emailB = `rls-test-b-${Date.now()}@example.com`;
+
+    await parentAClient.auth.signUp({ email: emailA, password: "test-password-123" });
+    await parentAClient.auth.signInWithPassword({ email: emailA, password: "test-password-123" });
+    await parentBClient.auth.signUp({ email: emailB, password: "test-password-123" });
+    await parentBClient.auth.signInWithPassword({ email: emailB, password: "test-password-123" });
+
+    const { data: childRow } = await parentAClient
+      .from("children")
+      .insert({ name: "Test Cadet A", avatar: "🤖", pin_hash: "irrelevant-for-this-test", rank: 1 })
+      .select("id")
+      .single();
+    parentAChildId = childRow!.id;
+  });
+
+  afterAll(async () => {
+    await parentAClient.from("children").delete().eq("id", parentAChildId);
+    await parentAClient.auth.signOut();
+    await parentBClient.auth.signOut();
+  });
+
+  it("blocks Parent B from reading Parent A's child profile", async () => {
+    const { data, error } = await parentBClient.from("children").select("*").eq("id", parentAChildId);
+    expect(error).toBeNull();
+    expect(data).toEqual([]);
+  });
+
+  it("blocks Parent B from updating Parent A's child profile", async () => {
+    const { data } = await parentBClient
+      .from("children")
+      .update({ rank: 99 })
+      .eq("id", parentAChildId)
+      .select();
+    expect(data).toEqual([]);
+
+    const { data: unchanged } = await parentAClient.from("children").select("rank").eq("id", parentAChildId).single();
+    expect(unchanged?.rank).toBe(1);
+  });
+
+  it("blocks Parent B from inserting mission_progress for Parent A's child", async () => {
+    const { error } = await parentBClient
+      .from("mission_progress")
+      .insert({ child_id: parentAChildId, course: "robotics", rank: 1, turns_completed: 0 });
+    expect(error).not.toBeNull();
+  });
+});
+```
+
+- [ ] **Step 3: Run the test against a local or test Supabase project**
+
+Run: `SUPABASE_TEST_URL=... SUPABASE_TEST_ANON_KEY=... npm test -- tests/supabase/rls.test.ts`
+Expected: PASS, 3 tests. If `SUPABASE_TEST_URL`/`SUPABASE_TEST_ANON_KEY` are unset, the suite is skipped (visible as "skipped" in test output) rather than failing — this keeps `npm test` green in environments without a live Supabase project, while still giving anyone with credentials a real gate to run before deploying the RLS policies from Task 2.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add tests/supabase/rls.test.ts .env.test.example
+git commit -m "test: add RLS cross-parent isolation test"
+```
+
+---
+
+### Task 12: Apply impeccable design pass
 
 **Files:**
 - Modify: `app/globals.css`, `components/CommandOrb.tsx`, `components/MissionTranscript.tsx`, `app/mission/MissionClient.tsx`, `app/login/page.tsx`, `app/profiles/page.tsx`
@@ -1614,7 +1718,7 @@ Run the `impeccable` skill against the current UI (login, profiles, mission page
 - [ ] **Step 2: Verify no interface changes broke existing tests**
 
 Run: `npm test`
-Expected: all prior tests (Tasks 3-9) still PASS — this task is visual-only.
+Expected: all prior tests (Tasks 3-11) still PASS — this task is visual-only.
 
 - [ ] **Step 3: Manual check in browser**
 
@@ -1626,3 +1730,56 @@ Run: `npm run dev`, click through login → profiles → mission, confirm scanli
 git add -A
 git commit -m "style: apply Full Tactical design pass to Cadet experience"
 ```
+
+---
+
+### Task 13: Final acceptance checklist
+
+**Files:**
+- None (verification-only task; no code changes)
+
+**Interfaces:**
+- Consumes: the fully assembled app from Tasks 1-12
+
+This task is the explicit go/no-go gate for the plan. Every item below must be checked off — by actually performing the action and observing the result, not by inference from earlier tasks passing — before this plan is considered done. Requires a real `.env.local` with `GROQ_API_KEY` and Supabase credentials, and the Task 2 migration applied to that Supabase project.
+
+- [ ] **Step 1: Run the full automated test suite one final time**
+
+Run: `npm test`
+Expected: all tests PASS (RLS test from Task 11 will skip unless `SUPABASE_TEST_URL`/`SUPABASE_TEST_ANON_KEY` are set — if so, also run it explicitly per Task 11 Step 3 and confirm it passes for real before checking this off).
+
+- [ ] **Step 2: Voice loop end-to-end, mouse**
+
+`npm run dev` → sign up → create child profile → select profile with correct PIN → land on `/mission` → hold "Hold to Talk" with mouse, speak, release. Confirm: transcript shows both the Orb's response, Orb visibly pulses while held, audio plays back.
+
+- [ ] **Step 3: Voice loop end-to-end, touch**
+
+Repeat Step 2 using touch input (real touch device or browser device-emulation mode). Confirm identical behavior to mouse.
+
+- [ ] **Step 4: Accidental-tap guard**
+
+Tap-and-immediately-release "Hold to Talk" (well under 300ms). Confirm: no request is sent, no turn is added to the transcript, no crash.
+
+- [ ] **Step 5: Mic-denied fallback**
+
+Deny microphone permission (via browser site settings) and reload `/mission`. Confirm: "Hold to Talk" is replaced by "Option A"/"Option B" tap buttons, and tapping one produces an Orb response.
+
+- [ ] **Step 6: PIN mismatch**
+
+From `/profiles`, select a child profile and enter an incorrect PIN. Confirm: an in-character error message appears, no redirect to `/mission` occurs.
+
+- [ ] **Step 7: Rank persists across a page refresh**
+
+Complete enough mission turns to trigger a rank-up (Orb response should eventually include a rank increase). Refresh `/mission`. Confirm: the displayed rank matches the post-rank-up value, not the original starting rank.
+
+- [ ] **Step 8: AI failure fallback**
+
+Temporarily set `GROQ_API_KEY` to an invalid value, attempt a mission turn, confirm the in-character fallback line appears instead of a crash or raw error. Restore the valid key afterward.
+
+- [ ] **Step 9: Visual pass didn't regress interaction**
+
+With the Task 12 design pass applied, repeat Step 2 (mouse voice loop) once more and confirm scanline/terminal-reveal effects render without blocking or delaying the Hold-to-Talk interaction.
+
+- [ ] **Step 10: Sign off**
+
+Once all steps above are checked, this plan is complete. If any step fails, do not check it off — file it as a follow-up task or fix before considering the Core Cadet Experience MVP done.
