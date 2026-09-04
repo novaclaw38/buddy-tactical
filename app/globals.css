@@ -91,11 +91,28 @@ body::before {
 }
 
 /* HUD-mask border: a bracketed frame that reads as scanned instrumentation
-   around a functional control, without altering its box model. */
+   around a functional control, without altering its box model. Interaction
+   states pick up the Orb core's soft offset glow (see DESIGN.md's "One Glow
+   Rule" extension) so the whole system reads as instrumented, not just the
+   Orb — the glow color always matches the control's own border color via
+   currentColor, so a teal control glows teal and an orange control glows
+   orange without a second variable per control. */
 .hud-frame {
   position: relative;
   border-width: 1px;
   border-style: solid;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-frame:hover,
+.hud-frame:focus-visible {
+  box-shadow: 0 4px 20px -6px currentColor;
+}
+
+.hud-frame:active {
+  box-shadow: 0 2px 10px -4px currentColor;
+  transition-duration: 100ms;
 }
 
 .hud-frame::before,
@@ -122,19 +139,28 @@ body::before {
   border-right: 2px solid;
 }
 
-/* Full-screen scanline-wipe transition, triggered on rank-up. */
+/* Full-screen scanline-wipe transition, triggered on rank-up. The bloom at
+   60% echoes the Command Orb's own offset glow (see DESIGN.md's "One Glow
+   Rule" extension) so this reads as the same instrument lighting up at
+   full power, not a separate flat effect. */
 @keyframes system-reboot-wipe {
   0% {
     clip-path: inset(0 0 100% 0);
     opacity: 1;
+    box-shadow: 0 0 0 0 transparent inset;
   }
-  60% {
+  55% {
     clip-path: inset(0 0 0 0);
     opacity: 1;
+    box-shadow: 0 0 0 0 transparent inset;
+  }
+  65% {
+    box-shadow: 0 0 120px 0 var(--tactical-teal) inset;
   }
   100% {
     clip-path: inset(0 0 0 0);
     opacity: 0;
+    box-shadow: 0 0 0 0 transparent inset;
   }
 }
 
