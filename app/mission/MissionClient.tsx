@@ -151,7 +151,7 @@ export function MissionClient({ childName, course }: { childName: string; course
         <button
           type="button"
           onClick={stopAudio}
-          className="hud-frame border-[color:var(--tactical-teal)] px-3 py-1 text-sm text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+          className="hud-frame border-[color:var(--tactical-teal)] px-3 py-1 text-sm text-[color:var(--tactical-teal)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
         >
           Stop Commander Audio
         </button>
@@ -161,14 +161,14 @@ export function MissionClient({ childName, course }: { childName: string; course
           <button
             onClick={() => submitTurn(null, "A")}
             disabled={isSubmittingTurn}
-            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] disabled:opacity-40 disabled:pointer-events-none"
           >
             Option A
           </button>
           <button
             onClick={() => submitTurn(null, "B")}
             disabled={isSubmittingTurn}
-            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 text-[color:var(--tactical-teal)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] disabled:opacity-40 disabled:pointer-events-none"
           >
             Option B
           </button>
@@ -189,7 +189,7 @@ export function MissionClient({ childName, course }: { childName: string; course
           onKeyDown={handleTalkKeyDown}
           onKeyUp={handleTalkKeyUp}
           disabled={isSubmittingTurn}
-          className="hud-frame rounded-full px-8 py-4 text-[color:var(--alert-orange)] border-[color:var(--alert-orange)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)] transition-colors active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
+          className="hud-frame rounded-full px-8 py-4 text-[color:var(--alert-orange)] border-[color:var(--alert-orange)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--command-black-raised)] hover:shadow-[0_6px_24px_-4px_var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)] active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
         >
           {isSubmittingTurn ? "Transmitting…" : "Hold to Talk"}
         </button>

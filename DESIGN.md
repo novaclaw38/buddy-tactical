@@ -41,6 +41,7 @@ components:
     padding: "12px"
   button-primary-hover:
     backgroundColor: "{colors.tactical-teal-dim}"
+    shadow: "0 6px 24px -4px {colors.tactical-teal}"
   button-secondary:
     backgroundColor: "transparent"
     textColor: "{colors.alert-orange}"
@@ -48,6 +49,7 @@ components:
     padding: "12px"
   button-secondary-hover:
     backgroundColor: "{colors.command-black-raised}"
+    shadow: "0 6px 24px -4px {colors.alert-orange}"
   input:
     backgroundColor: "{colors.command-black-raised}"
     textColor: "{colors.tactical-teal}"
@@ -71,12 +73,14 @@ any given screen at rest: the Command Orb. Everything else stays flat,
 square-cornered, and quiet, so that when something does light up or expand,
 it reads as instrumentation actually responding, not decoration.
 
-The system currently has almost no elevation outside the Orb's core glow
-(`0 6px 24px -4px` of Tactical Teal). That glow is a confirmed direction to
-extend, not a one-off: further work should give other key moments of
-feedback (control hover/active states, the System Reboot transition) their
-own deliberate glow or lift, using the Orb's soft, colored, offset shadow as
-the reference — never a flat zero-offset halo.
+The Orb's core glow (`0 6px 24px -4px` of Tactical Teal) is at rest; every
+other functional control now carries the same offset, colored shadow shape
+on hover — Tactical Teal glow for teal (button-primary) controls, Alert
+Orange glow for orange (button-secondary) controls, tinted to match
+whichever accent the control already speaks in. The System Reboot
+transition remains the one moment that hasn't picked up its own glow/lift
+yet — that stays open as future direction, using the same offset,
+colored-shadow shape, never a flat zero-offset halo.
 
 Two colors do all the signaling: Tactical Teal for the system's own voice
 (the Commander, primary actions, focus/system state) and Alert Orange for
@@ -88,7 +92,7 @@ is no light mode.
 **Key Characteristics:**
 - Bracketed HUD-frame corners on every functional control, never a plain box border
 - Command Black is the only background — no light-mode counterpart exists
-- Exactly one glowing element at rest (the Orb); other glow/lift is confirmed direction, not yet implemented elsewhere
+- Exactly one glowing element at rest (the Orb); every hoverable control now glows on interaction in its own accent color
 - Square corners everywhere except the Orb and the circular "Hold to Talk" control
 - Single monospace voice (JetBrains Mono) end to end — no secondary display or body face
 - A constant, near-invisible CRT scanline drift over the entire viewport
@@ -154,19 +158,21 @@ sequence a child can follow top to bottom without visual choice-paralysis.
 
 ## Elevation & Depth
 
-The system is flat by default: no borders-plus-shadow combinations, no card
-surfaces, no drop shadows on inputs or buttons. Depth is conveyed instead by
-the HUD-frame bracket treatment (see Shapes) and by the one deliberate
-exception — the Command Orb's core, which carries a soft, colored, offset
-glow. Confirmed direction extends this glow/lift language to other moments
-of feedback going forward (hover/active states, the System Reboot
-transition); until that's implemented, only the Orb carries it.
+The system is flat at rest: no borders-plus-shadow combinations, no card
+surfaces, no drop shadows on inputs or static buttons. Depth is conveyed by
+the HUD-frame bracket treatment (see Shapes), by the Command Orb's core
+glow at rest, and by the same offset, colored glow appearing on every
+hoverable control at the moment of interaction — the system stays flat
+until something responds, then it lights up in its own accent color. The
+System Reboot transition is the one feedback moment that hasn't picked up
+a matching glow/lift treatment yet.
 
 ### Shadow Vocabulary
-- **Orb Core Glow** (`box-shadow: 0 6px 24px -4px var(--tactical-teal)`): the Command Orb's only depth cue — a soft offset glow, never a symmetric halo. Reference shadow shape for any future glow/lift work.
+- **Orb Core Glow** (`box-shadow: 0 6px 24px -4px var(--tactical-teal)`): the Command Orb's rest-state depth cue — a soft offset glow, never a symmetric halo. Reference shadow shape for every other glow in the system.
+- **Control Hover Glow** (`box-shadow: 0 6px 24px -4px var(--tactical-teal)` or `var(--alert-orange)`): every `hud-frame` button and pressable control (buttons, links styled as buttons, the avatar picker, Hold to Talk) carries this on `:hover`, tinted to match whichever accent the control already speaks in — teal for button-primary, orange for button-secondary. Never mix: a teal-bordered control never glows orange and vice versa.
 
 ### Named Rules
-**The One Glow Rule (currently).** At present only the Orb carries elevation; every other surface stays flat. This is being deliberately extended — new glow/lift should follow the Orb's offset, colored-shadow shape, not invent a flat drop-shadow language.
+**The One Glow Rule.** Elevation only ever takes the Orb's offset, colored-shadow shape — never a flat, zero-offset halo, never a generic drop shadow. At rest, only the Orb carries it; on hover, every functional control carries it in its own accent color. Nothing carries elevation without a state (rest or hover) that earns it.
 
 ## Shapes
 
@@ -192,7 +198,7 @@ never soft or ambiguous about its state.
 - **Shape:** square corners, HUD-frame bracket border (no `border-radius`), except "Hold to Talk" which is `rounded-full`.
 - **Primary (teal):** transparent background, Tactical Teal text and border, `p-3` (12px) padding. Used for the system's own actions (Log In, Confirm PIN).
 - **Secondary (orange):** transparent background, Alert Orange text and border. Used for the child/parent-attention path (Sign Up, Create Profile, Hold to Talk).
-- **Hover:** teal buttons fill with Tactical Teal Dim; orange buttons fill with Command Black Raised — always a dark tonal fill, never a lighter tint or the accent color itself as background.
+- **Hover:** teal buttons fill with Tactical Teal Dim; orange buttons fill with Command Black Raised — always a dark tonal fill, never a lighter tint or the accent color itself as background. Every hover also picks up the Control Hover Glow (see Elevation & Depth) in the button's own accent — teal buttons glow teal, orange buttons glow orange, never crossed.
 - **Focus:** every button and input gets a 2px Alert Orange (or Tactical Teal, on the orange Create-Profile button) `focus-visible` outline — focus state always uses the *opposite* accent from the control's own color, so it's never ambiguous with a hover fill.
 - **Ghost/Text link:** the "Back" button in the PIN flow — small, underlined, teal by default, shifts to Alert Orange on hover.
 
@@ -202,10 +208,11 @@ never soft or ambiguous about its state.
 - **Error:** rendered as a separate `role="alert"` line in Alert Orange below the field, wrapped in its own HUD-frame when it's a page-level error (e.g. login failure) — never an inline red-underline or border-color change on the field itself.
 
 ### The Command Orb (signature)
-The AI avatar and the system's only glowing element. Three concentric
-layers: two outer rings (teal border at 40%/25% opacity, counter-rotating
-on voice amplitude) around a solid teal core (`w-16 h-16`) carrying the
-system's one soft offset glow. Amplitude (0–1, driven by mic input level)
+The AI avatar and the only element that glows at rest, with no interaction
+required. Three concentric layers: two outer rings (teal border at 40%/25%
+opacity, counter-rotating on voice amplitude) around a solid teal core
+(`w-16 h-16`) carrying the system's reference offset glow. Amplitude (0–1,
+driven by mic input level)
 scales the core up to 1.25× and the rings up to 1.12×, with the rings also
 rotating up to ±25°/±18° — the Orb visibly "listens" rather than just
 pulsing uniformly.

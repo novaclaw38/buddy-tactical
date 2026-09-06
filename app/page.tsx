@@ -89,7 +89,7 @@ export default async function Home() {
 
         <Link
           href="/login"
-          className="animate-boot-in hud-frame border-[color:var(--alert-orange)] px-8 py-4 text-[color:var(--alert-orange)] transition-colors hover:bg-[color:var(--command-black-raised)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
+          className="animate-boot-in hud-frame border-[color:var(--alert-orange)] px-8 py-4 text-[color:var(--alert-orange)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--command-black-raised)] hover:shadow-[0_6px_24px_-4px_var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
           style={{ animationDelay: "560ms" }}
         >
           Enlist Your Cadet
@@ -146,7 +146,7 @@ export default async function Home() {
         </p>
         <Link
           href="/login"
-          className="hud-frame border-[color:var(--alert-orange)] px-8 py-4 text-[color:var(--alert-orange)] transition-colors hover:bg-[color:var(--command-black-raised)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
+          className="hud-frame border-[color:var(--alert-orange)] px-8 py-4 text-[color:var(--alert-orange)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--command-black-raised)] hover:shadow-[0_6px_24px_-4px_var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
         >
           Enlist Your Cadet
         </Link>

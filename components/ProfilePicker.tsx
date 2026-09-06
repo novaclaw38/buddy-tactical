@@ -21,7 +21,7 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
           <button
             key={child.id}
             onClick={() => setSelected(child)}
-            className="hud-frame border-[color:var(--tactical-teal)] flex flex-col items-center gap-2 p-4 hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+            className="hud-frame border-[color:var(--tactical-teal)] flex flex-col items-center gap-2 p-4 transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
           >
             <span className="text-4xl">{child.avatar}</span>
             <span className="tracking-[-0.02em]">{child.name}</span>
@@ -58,7 +58,7 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
       )}
       <SubmitButton
         pendingLabel="Verifying…"
-        className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+        className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
       >
         Confirm
       </SubmitButton>

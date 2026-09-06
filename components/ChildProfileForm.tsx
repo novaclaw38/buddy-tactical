@@ -43,7 +43,7 @@ export function ChildProfileForm() {
       />
       <SubmitButton
         pendingLabel="Creating Profile…"
-        className="hud-frame border-[color:var(--alert-orange)] p-3 text-[color:var(--alert-orange)] hover:bg-[color:var(--command-black-raised)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)] transition-colors"
+        className="hud-frame border-[color:var(--alert-orange)] p-3 text-[color:var(--alert-orange)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--command-black-raised)] hover:shadow-[0_6px_24px_-4px_var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
       >
         Create Profile
       </SubmitButton>

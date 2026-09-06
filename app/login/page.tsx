@@ -39,14 +39,14 @@ export default async function LoginPage({
         <SubmitButton
           formAction={signIn}
           pendingLabel="Logging In…"
-          className="hud-frame border-[color:var(--tactical-teal)] p-3 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
+          className="hud-frame border-[color:var(--tactical-teal)] p-3 text-[color:var(--tactical-teal)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--tactical-teal-dim)] hover:shadow-[0_6px_24px_-4px_var(--tactical-teal)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
         >
           Log In
         </SubmitButton>
         <SubmitButton
           formAction={signUp}
           pendingLabel="Signing Up…"
-          className="hud-frame border-[color:var(--alert-orange)] p-3 text-[color:var(--alert-orange)] hover:bg-[color:var(--command-black-raised)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)] transition-colors"
+          className="hud-frame border-[color:var(--alert-orange)] p-3 text-[color:var(--alert-orange)] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-[color:var(--command-black-raised)] hover:shadow-[0_6px_24px_-4px_var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)]"
         >
           Sign Up
         </SubmitButton>
