@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { selectChildProfile } from "@/app/profiles/actions";
+import { SubmitButton } from "@/components/SubmitButton";
 
 interface ChildSummary {
   id: string;
@@ -41,8 +42,9 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
       }}
       className="flex flex-col gap-3 items-center"
     >
-      <p className="tracking-[-0.02em]">Enter PIN for {selected.name}</p>
+      <label htmlFor="profile-pin" className="tracking-[-0.02em]">Enter PIN for {selected.name}</label>
       <input
+        id="profile-pin"
         name="pin"
         type="password"
         inputMode="numeric"
@@ -54,16 +56,16 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
           {error}
         </p>
       )}
-      <button
-        type="submit"
+      <SubmitButton
+        pendingLabel="Verifying…"
         className="hud-frame border-[color:var(--tactical-teal)] px-4 py-2 hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
       >
         Confirm
-      </button>
+      </SubmitButton>
       <button
         type="button"
         onClick={() => setSelected(null)}
-        className="text-sm underline decoration-[color:var(--tactical-teal)]/60 hover:text-[color:var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
+        className="min-h-11 min-w-11 px-2 text-sm underline decoration-[color:var(--tactical-teal)]/60 hover:text-[color:var(--alert-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
       >
         Back
       </button>

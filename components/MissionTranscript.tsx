@@ -9,7 +9,7 @@ export function MissionTranscript({ turns }: { turns: Turn[] }) {
   const mountedTurnCountRef = useRef(turns.length);
 
   return (
-    <div className="flex flex-col gap-2 max-w-xl w-full">
+    <div className="flex flex-col gap-2 max-w-xl w-full" aria-live="polite">
       {turns.map((turn, index) => {
         const isNewestTurn = index === turns.length - 1;
         const wasPresentOnMount = index < mountedTurnCountRef.current;

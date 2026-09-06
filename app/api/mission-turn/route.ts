@@ -25,19 +25,23 @@ export async function POST(request: Request) {
   const form = await request.formData();
   const audioFile = form.get("audio") as File;
   const course = String(form.get("course"));
+  const tapAnswer = form.get("tapAnswer") as string | null;
   const recentTurns = JSON.parse(String(form.get("recentTurns"))) as MissionTurn[];
 
-  const audioBuffer = Buffer.from(await audioFile.arrayBuffer());
   const currentProgress = await getMissionProgress(childId, course);
 
   let orbText: string;
+  let transcript = tapAnswer ?? "";
   let rankDelta = 0;
   let missionComplete = false;
   let audioBase64: string | null = null;
   let succeeded = false;
 
   try {
-    const transcript = await withOneRetry(() => transcribeAudio(audioBuffer));
+    if (!tapAnswer) {
+      const audioBuffer = Buffer.from(await audioFile.arrayBuffer());
+      transcript = await withOneRetry(() => transcribeAudio(audioBuffer));
+    }
     const beat = await withOneRetry(() =>
       generateMissionBeat({
         course: course as "robotics",
@@ -68,6 +72,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({
+    transcript: succeeded ? transcript : null,
     orb_text: orbText,
     audio_base64: audioBase64,
     rank: progress.rank,

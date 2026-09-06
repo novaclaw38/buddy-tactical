@@ -1,4 +1,5 @@
 import { signUp, signIn } from "./actions";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function LoginPage({
   searchParams,
@@ -16,14 +17,18 @@ export default async function LoginPage({
         </p>
       )}
       <form className="flex flex-col gap-3 w-full max-w-sm">
+        <label htmlFor="email" className="sr-only">Email</label>
         <input
+          id="email"
           name="email"
           type="email"
           placeholder="Email"
           required
           className="hud-frame border-[color:var(--tactical-teal)] bg-[color:var(--command-black-raised)] p-3 text-[color:var(--tactical-teal)] placeholder:text-[color:var(--tactical-teal)]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
         />
+        <label htmlFor="password" className="sr-only">Password</label>
         <input
+          id="password"
           name="password"
           type="password"
           placeholder="Password"
@@ -31,18 +36,20 @@ export default async function LoginPage({
           minLength={8}
           className="hud-frame border-[color:var(--tactical-teal)] bg-[color:var(--command-black-raised)] p-3 text-[color:var(--tactical-teal)] placeholder:text-[color:var(--tactical-teal)]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)]"
         />
-        <button
+        <SubmitButton
           formAction={signIn}
+          pendingLabel="Logging In…"
           className="hud-frame border-[color:var(--tactical-teal)] p-3 text-[color:var(--tactical-teal)] hover:bg-[color:var(--tactical-teal-dim)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--alert-orange)] transition-colors"
         >
           Log In
-        </button>
-        <button
+        </SubmitButton>
+        <SubmitButton
           formAction={signUp}
+          pendingLabel="Signing Up…"
           className="hud-frame border-[color:var(--alert-orange)] p-3 text-[color:var(--alert-orange)] hover:bg-[color:var(--command-black-raised)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--tactical-teal)] transition-colors"
         >
           Sign Up
-        </button>
+        </SubmitButton>
       </form>
     </main>
   );
