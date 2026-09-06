@@ -185,3 +185,37 @@ body::before {
     animation-duration: 1ms;
   }
 }
+
+/* Boot-sequence stagger: the landing page's instrument panels power on in
+   sequence on load, like a real pre-flight panel arming, rather than
+   appearing all at once. Reduced motion shows the settled state instantly. */
+@keyframes boot-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-boot-in {
+  animation: boot-in 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-boot-in {
+    animation: none;
+  }
+}
+
+/* Reticle ticks: four short axis marks around the Command Orb on the landing
+   hero, extending the HUD-frame's targeting-reticle language (see DESIGN.md)
+   to the Orb itself for this one composition. */
+.orb-reticle {
+  position: absolute;
+  background-color: var(--tactical-teal);
+  opacity: 0.5;
+}
+
