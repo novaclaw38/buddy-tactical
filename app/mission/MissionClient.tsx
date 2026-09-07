@@ -20,9 +20,17 @@ interface MissionTurnResponse {
   mission_complete: boolean;
 }
 
-export function MissionClient({ childName, course }: { childName: string; course: string }) {
+export function MissionClient({
+  childName,
+  course,
+  initialRank,
+}: {
+  childName: string;
+  course: string;
+  initialRank: number;
+}) {
   const [turns, setTurns] = useState<Turn[]>([]);
-  const [rank, setRank] = useState<number | null>(null);
+  const [rank, setRank] = useState<number | null>(initialRank);
   const [amplitude, setAmplitude] = useState(0);
   const [micDenied, setMicDenied] = useState(false);
   const [showReboot, setShowReboot] = useState(false);

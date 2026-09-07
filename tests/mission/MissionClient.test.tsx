@@ -17,7 +17,7 @@ describe("MissionClient", () => {
     });
 
     const user = userEvent.setup();
-    render(<MissionClient childName="Alex" course="robotics" />);
+    render(<MissionClient childName="Alex" course="robotics" initialRank={1} />);
 
     await user.pointer({ keys: "[MouseLeft>]", target: screen.getByText("Hold to Talk") });
 
@@ -37,7 +37,7 @@ describe("MissionClient", () => {
     });
 
     const user = userEvent.setup();
-    render(<MissionClient childName="Alex" course="robotics" />);
+    render(<MissionClient childName="Alex" course="robotics" initialRank={1} />);
     await user.pointer({ keys: "[MouseLeft>]", target: screen.getByText("Hold to Talk") });
     await waitFor(() => screen.getByText("Option A"), { timeout: 5000 });
 
