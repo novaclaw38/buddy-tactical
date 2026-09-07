@@ -37,7 +37,7 @@
 **Interfaces:**
 - Produces: Next.js app runnable via `npm run dev`; Vitest runnable via `npm test`.
 
-- [ ] **Step 1: Scaffold Next.js app**
+- [x] **Step 1: Scaffold Next.js app**
 
 ```bash
 npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias "@/*" --eslint --use-npm
@@ -45,14 +45,14 @@ npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import
 
 When prompted, accept defaults for anything not already implied by flags.
 
-- [ ] **Step 2: Install project dependencies**
+- [x] **Step 2: Install project dependencies**
 
 ```bash
 npm install @supabase/supabase-js @supabase/ssr groq-sdk
 npm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom
 ```
 
-- [ ] **Step 3: Add Vitest config**
+- [x] **Step 3: Add Vitest config**
 
 `vitest.config.ts`:
 ```typescript
@@ -68,14 +68,14 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Add test script to package.json**
+- [x] **Step 4: Add test script to package.json**
 
 In `package.json`, add to `"scripts"`:
 ```json
 "test": "vitest run"
 ```
 
-- [ ] **Step 5: Add tactical theme CSS variables**
+- [x] **Step 5: Add tactical theme CSS variables**
 
 In `app/globals.css`, add at the top (after Tailwind directives):
 ```css
@@ -92,7 +92,7 @@ body {
 }
 ```
 
-- [ ] **Step 6: Add .env.example**
+- [x] **Step 6: Add .env.example**
 
 `.env.example`:
 ```
@@ -102,17 +102,17 @@ SUPABASE_SERVICE_ROLE_KEY=
 GROQ_API_KEY=
 ```
 
-- [ ] **Step 7: Verify dev server boots**
+- [x] **Step 7: Verify dev server boots**
 
 Run: `npm run dev -- --port 3100 &` then `curl -sf http://localhost:3100 > /dev/null && echo OK`
 Expected: `OK`. Kill the background server after (`kill %1` or equivalent).
 
-- [ ] **Step 8: Verify test runner works**
+- [x] **Step 8: Verify test runner works**
 
 Run: `npm test`
 Expected: passes with "No test files found" or 0 tests (no test files yet) — must not error on config.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -134,7 +134,7 @@ git commit -m "chore: scaffold Next.js app with Tailwind and Vitest"
   - `createServerSupabaseClient(): Promise<SupabaseClient>` in `lib/supabase/server.ts`
   - Tables: `children(id uuid, parent_id uuid, name text, avatar text, pin_hash text, rank int, created_at timestamptz)`, `mission_progress(id uuid, child_id uuid, course text, rank int, turns_completed int, updated_at timestamptz)`, `mission_turns(id uuid, child_id uuid, role text, content text, created_at timestamptz)`
 
-- [ ] **Step 1: Write migration SQL**
+- [x] **Step 1: Write migration SQL**
 
 `supabase/migrations/0001_init.sql`:
 ```sql
@@ -188,7 +188,7 @@ create policy "Parents manage their children's turns"
 
 **Flagging per project security rules: this RLS policy scopes all access to the authenticated parent (`auth.uid() = parent_id`, or the child belonging to that parent) — review before applying to a live database, since a wrong `USING` clause here would expose one parent's children to another.**
 
-- [ ] **Step 2: Write browser Supabase client**
+- [x] **Step 2: Write browser Supabase client**
 
 `lib/supabase/client.ts`:
 ```typescript
@@ -202,7 +202,7 @@ export function createBrowserSupabaseClient() {
 }
 ```
 
-- [ ] **Step 3: Write server Supabase client**
+- [x] **Step 3: Write server Supabase client**
 
 `lib/supabase/server.ts`:
 ```typescript
@@ -230,12 +230,12 @@ export async function createServerSupabaseClient() {
 }
 ```
 
-- [ ] **Step 4: Verify build compiles**
+- [x] **Step 4: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add supabase lib/supabase
@@ -254,7 +254,7 @@ git commit -m "feat: add Supabase schema and client helpers"
 - Produces: `applyRankDelta(current: { rank: number; turnsCompleted: number }, delta: number): { rank: number; turnsCompleted: number; rankedUp: boolean }` in `lib/mission/rank.ts`
 - Consumes: nothing (pure function, no earlier task dependency beyond scaffold)
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/mission/rank.test.ts`:
 ```typescript
@@ -287,12 +287,12 @@ describe("applyRankDelta", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test -- tests/mission/rank.test.ts`
 Expected: FAIL — `Cannot find module '@/lib/mission/rank'`
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 `lib/mission/rank.ts`:
 ```typescript
@@ -316,12 +316,12 @@ export function applyRankDelta(current: RankState, delta: number): RankResult {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `npm test -- tests/mission/rank.test.ts`
 Expected: PASS, 4 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/mission/rank.ts tests/mission/rank.test.ts
@@ -340,7 +340,7 @@ git commit -m "feat: add rank progression logic"
 - Produces: `buildMissionPrompt(context: { course: "robotics"; rank: number; recentTurns: Array<{ role: "child" | "orb"; content: string }> }): string` in `lib/mission/prompt.ts`
 - Consumes: nothing new
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/mission/prompt.test.ts`:
 ```typescript
@@ -377,12 +377,12 @@ describe("buildMissionPrompt", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/mission/prompt.test.ts`
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 `lib/mission/prompt.ts`:
 ```typescript
@@ -417,12 +417,12 @@ Respond with ONLY a JSON object of this exact shape, no other text:
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm test -- tests/mission/prompt.test.ts`
 Expected: PASS, 4 tests.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/mission/prompt.ts tests/mission/prompt.test.ts
@@ -448,13 +448,13 @@ git commit -m "feat: add Field Commander prompt builder"
   - `generateMissionBeat(context: MissionContext): Promise<{ orb_text: string; rank_delta: number; mission_complete: boolean }>` in `lib/groq/llm.ts` — throws if the model's response doesn't match the expected shape (caller treats this the same as a network failure)
   - `synthesizeSpeech(text: string): Promise<Buffer>` in `lib/groq/tts.ts`
 
-- [ ] **Step 1: Install zod for runtime response validation**
+- [x] **Step 1: Install zod for runtime response validation**
 
 ```bash
 npm install zod
 ```
 
-- [ ] **Step 2: Write shared Groq client factory**
+- [x] **Step 2: Write shared Groq client factory**
 
 `lib/groq/client.ts`:
 ```typescript
@@ -470,7 +470,7 @@ export function getGroqClient(): Groq {
 }
 ```
 
-- [ ] **Step 3: Write STT wrapper**
+- [x] **Step 3: Write STT wrapper**
 
 `lib/groq/stt.ts`:
 ```typescript
@@ -487,7 +487,7 @@ export async function transcribeAudio(audio: Buffer): Promise<string> {
 }
 ```
 
-- [ ] **Step 4: Write the failing tests for the LLM wrapper**
+- [x] **Step 4: Write the failing tests for the LLM wrapper**
 
 `tests/groq/llm.test.ts`:
 ```typescript
@@ -543,12 +543,12 @@ describe("generateMissionBeat", () => {
 });
 ```
 
-- [ ] **Step 5: Run tests to verify they fail**
+- [x] **Step 5: Run tests to verify they fail**
 
 Run: `npm test -- tests/groq/llm.test.ts`
 Expected: FAIL — module not found.
 
-- [ ] **Step 6: Write minimal LLM implementation with schema validation**
+- [x] **Step 6: Write minimal LLM implementation with schema validation**
 
 `lib/groq/llm.ts`:
 ```typescript
@@ -582,12 +582,12 @@ export async function generateMissionBeat(context: MissionContext): Promise<Miss
 }
 ```
 
-- [ ] **Step 7: Run tests to verify they pass**
+- [x] **Step 7: Run tests to verify they pass**
 
 Run: `npm test -- tests/groq/llm.test.ts`
 Expected: PASS, 3 tests.
 
-- [ ] **Step 8: Write TTS wrapper**
+- [x] **Step 8: Write TTS wrapper**
 
 `lib/groq/tts.ts`:
 ```typescript
@@ -606,12 +606,12 @@ export async function synthesizeSpeech(text: string): Promise<Buffer> {
 }
 ```
 
-- [ ] **Step 9: Verify build compiles**
+- [x] **Step 9: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add lib/groq tests/groq package.json package-lock.json
@@ -630,7 +630,7 @@ git commit -m "feat: add Groq STT, LLM, and TTS wrappers with response validatio
 - Consumes: `transcribeAudio`, `generateMissionBeat`, `synthesizeSpeech` from Task 5; `applyRankDelta` from Task 3; `createServerSupabaseClient` from Task 2; `child_id` cookie (set in Task 8) as the sole source of which child this turn belongs to
 - Produces: `POST /api/mission-turn` — accepts `multipart/form-data` with fields `audio` (file), `course` (string), `recentTurns` (JSON string of `MissionTurn[]`). Rank is never accepted from the client — the route reads it from `mission_progress` (row keyed by `child_id` + `course`, created with `rank: 1, turns_completed: 0` if absent) and writes the updated row back before responding. Returns JSON `{ orb_text: string; audio_base64: string; rank: number; ranked_up: boolean; mission_complete: boolean }` on success, or the fallback shape `{ orb_text: "Comms are glitchy, Cadet — say that again?"; audio_base64: null; rank: number; ranked_up: false; mission_complete: false }` on failure after retry (`rank` in the fallback is the persisted rank, unchanged).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/api/mission-turn.test.ts`:
 ```typescript
@@ -712,12 +712,12 @@ describe("POST /api/mission-turn", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/api/mission-turn.test.ts`
 Expected: FAIL — route module not found.
 
-- [ ] **Step 3: Write the mission-progress data helper**
+- [x] **Step 3: Write the mission-progress data helper**
 
 `lib/mission/progress.ts`:
 ```typescript
@@ -756,7 +756,7 @@ export async function saveMissionProgress(childId: string, course: string, state
 }
 ```
 
-- [ ] **Step 4: Write minimal route implementation**
+- [x] **Step 4: Write minimal route implementation**
 
 `app/api/mission-turn/route.ts`:
 ```typescript
@@ -839,12 +839,12 @@ export async function POST(request: Request) {
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `npm test -- tests/api/mission-turn.test.ts`
 Expected: PASS, 3 tests.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add app/api/mission-turn lib/mission/progress.ts tests/api/mission-turn.test.ts
@@ -863,7 +863,7 @@ git commit -m "feat: add mission-turn API route with server-authoritative rank p
 - Consumes: `createServerSupabaseClient` from Task 2
 - Produces: `/login` route with email/password sign-up and sign-in forms; on success redirects to `/profiles`
 
-- [ ] **Step 1: Write server actions for sign-up and sign-in**
+- [x] **Step 1: Write server actions for sign-up and sign-in**
 
 `app/login/actions.ts`:
 ```typescript
@@ -897,7 +897,7 @@ export async function signIn(formData: FormData) {
 }
 ```
 
-- [ ] **Step 2: Write the login page**
+- [x] **Step 2: Write the login page**
 
 `app/login/page.tsx`:
 ```typescript
@@ -925,16 +925,16 @@ export default async function LoginPage({
 }
 ```
 
-- [ ] **Step 3: Verify build compiles**
+- [x] **Step 3: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 4: Manual check in browser**
+- [x] **Step 4: Manual check in browser**
 
 Run: `npm run dev`, open `http://localhost:3000/login`, confirm the form renders with Command Black background and teal-bordered inputs. Stop the dev server after.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/login
@@ -956,7 +956,7 @@ git commit -m "feat: add parent sign-up and login page"
 - Consumes: `createServerSupabaseClient` from Task 2, `children` table from Task 2
 - Produces: `/profiles` route listing existing child profiles (`ProfilePicker`) plus a create-new-child form (`ChildProfileForm`); selecting a profile and entering the correct PIN sets a `child_id` cookie and redirects to `/mission`. `ProfilePicker` component signature: `ProfilePicker({ children }: { children: Array<{ id: string; name: string; avatar: string }> })`
 
-- [ ] **Step 1: Write the failing component test**
+- [x] **Step 1: Write the failing component test**
 
 `tests/components/ProfilePicker.test.tsx`:
 ```typescript
@@ -988,7 +988,7 @@ describe("ProfilePicker", () => {
 });
 ```
 
-- [ ] **Step 2: Install user-event and run test to verify it fails**
+- [x] **Step 2: Install user-event and run test to verify it fails**
 
 ```bash
 npm install -D @testing-library/user-event
@@ -996,7 +996,7 @@ npm test -- tests/components/ProfilePicker.test.tsx
 ```
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write the ProfilePicker component**
+- [x] **Step 3: Write the ProfilePicker component**
 
 `components/ProfilePicker.tsx`:
 ```typescript
@@ -1053,12 +1053,12 @@ export function ProfilePicker({ children }: { children: ChildSummary[] }) {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm test -- tests/components/ProfilePicker.test.tsx`
 Expected: PASS, 2 tests.
 
-- [ ] **Step 5: Write ChildProfileForm component**
+- [x] **Step 5: Write ChildProfileForm component**
 
 `components/ChildProfileForm.tsx`:
 ```typescript
@@ -1084,14 +1084,14 @@ export function ChildProfileForm() {
 }
 ```
 
-- [ ] **Step 6: Install bcrypt for PIN hashing**
+- [x] **Step 6: Install bcrypt for PIN hashing**
 
 ```bash
 npm install bcryptjs
 npm install -D @types/bcryptjs
 ```
 
-- [ ] **Step 7: Write server actions for profile creation and selection**
+- [x] **Step 7: Write server actions for profile creation and selection**
 
 `app/profiles/actions.ts`:
 ```typescript
@@ -1149,7 +1149,7 @@ export async function selectChildProfile(formData: FormData): Promise<{ error?: 
 }
 ```
 
-- [ ] **Step 8: Write the failing test for PIN mismatch**
+- [x] **Step 8: Write the failing test for PIN mismatch**
 
 `tests/profiles/selectChildProfile.test.ts`:
 ```typescript
@@ -1208,12 +1208,12 @@ describe("selectChildProfile", () => {
 });
 ```
 
-- [ ] **Step 9: Run test to verify it fails, then passes**
+- [x] **Step 9: Run test to verify it fails, then passes**
 
 Run: `npm test -- tests/profiles/selectChildProfile.test.ts`
 Expected: FAILs first against the pre-bcrypt implementation only if run before Step 7 — since Step 7 already lands bcrypt, this should PASS, 2 tests, once Step 7's code is in place. If it fails, check that `verifyPin` is awaited and the mocked `from().select().eq().single` chain matches the actions code's query shape.
 
-- [ ] **Step 10: Write the profiles page**
+- [x] **Step 10: Write the profiles page**
 
 `app/profiles/page.tsx`:
 ```typescript
@@ -1245,12 +1245,12 @@ export default async function ProfilesPage() {
 }
 ```
 
-- [ ] **Step 11: Verify build compiles**
+- [x] **Step 11: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 git add app/profiles components/ProfilePicker.tsx components/ChildProfileForm.tsx tests/components/ProfilePicker.test.tsx tests/profiles/selectChildProfile.test.ts package.json package-lock.json
@@ -1271,7 +1271,7 @@ git commit -m "feat: add child profile creation and bcrypt-backed PIN picker"
   - `CommandOrb({ amplitude }: { amplitude: number })` in `components/CommandOrb.tsx` — `amplitude` is 0-1, scales the orb's visual pulse.
   - `MissionTranscript({ turns }: { turns: Array<{ role: "child" | "orb"; content: string }> })` in `components/MissionTranscript.tsx`
 
-- [ ] **Step 1: Write the failing test for MissionTranscript**
+- [x] **Step 1: Write the failing test for MissionTranscript**
 
 `tests/components/MissionTranscript.test.tsx`:
 ```typescript
@@ -1295,12 +1295,12 @@ describe("MissionTranscript", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/components/MissionTranscript.test.tsx`
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write MissionTranscript component**
+- [x] **Step 3: Write MissionTranscript component**
 
 `components/MissionTranscript.tsx`:
 ```typescript
@@ -1326,12 +1326,12 @@ export function MissionTranscript({ turns }: { turns: Turn[] }) {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm test -- tests/components/MissionTranscript.test.tsx`
 Expected: PASS.
 
-- [ ] **Step 5: Write CommandOrb component**
+- [x] **Step 5: Write CommandOrb component**
 
 `components/CommandOrb.tsx`:
 ```typescript
@@ -1347,12 +1347,12 @@ export function CommandOrb({ amplitude }: { amplitude: number }) {
 }
 ```
 
-- [ ] **Step 6: Verify build compiles**
+- [x] **Step 6: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add components/CommandOrb.tsx components/MissionTranscript.tsx tests/components/MissionTranscript.test.tsx
@@ -1372,7 +1372,7 @@ git commit -m "feat: add Command Orb and mission transcript components"
 - Consumes: `CommandOrb`, `MissionTranscript` from Task 9; `POST /api/mission-turn` from Task 6 (childId and rank are no longer sent by the client — the route derives both server-side); `createServerSupabaseClient` from Task 2; `child_id` cookie from Task 8
 - Produces: `/mission` route — the playable child-facing screen. `MissionClient` supports both mouse and touch input for Hold-to-Talk, and requires a minimum 300ms hold before submitting a turn (a shorter hold is treated as an accidental tap and discarded, no request sent).
 
-- [ ] **Step 1: Write the server page that loads the child's display name**
+- [x] **Step 1: Write the server page that loads the child's display name**
 
 `app/mission/page.tsx`:
 ```typescript
@@ -1400,7 +1400,7 @@ export default async function MissionPage() {
 }
 ```
 
-- [ ] **Step 2: Write the failing test for the mic-denied fallback UI**
+- [x] **Step 2: Write the failing test for the mic-denied fallback UI**
 
 `tests/mission/MissionClient.test.tsx`:
 ```typescript
@@ -1453,12 +1453,12 @@ describe("MissionClient", () => {
 });
 ```
 
-- [ ] **Step 3: Run test to verify it fails**
+- [x] **Step 3: Run test to verify it fails**
 
 Run: `npm test -- tests/mission/MissionClient.test.tsx`
 Expected: FAIL — module not found.
 
-- [ ] **Step 4: Write the client component driving the voice loop**
+- [x] **Step 4: Write the client component driving the voice loop**
 
 `app/mission/MissionClient.tsx`:
 ```typescript
@@ -1574,23 +1574,23 @@ export function MissionClient({ childName, course }: { childName: string; course
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `npm test -- tests/mission/MissionClient.test.tsx`
 Expected: PASS, 2 tests.
 
-- [ ] **Step 6: Verify build compiles**
+- [x] **Step 6: Verify build compiles**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 7: Manual verification of the full loop**
+- [x] **Step 7: Manual verification of the full loop**
 
 Requires real `.env.local` with `GROQ_API_KEY` and Supabase project credentials (apply migration from Task 2 first via `supabase db push` or the Supabase SQL editor).
 
 Run: `npm run dev`, open `http://localhost:3000/login`, sign up, create a child profile, select it with the PIN, land on `/mission`, hold "Hold to Talk", speak, release, and confirm: transcript shows both turns, Orb pulses during recording, audio plays back the Commander's response, rank updates. Also verify on a touch device or browser device-emulation mode that touch works identically. Stop the dev server after.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add app/mission tests/mission/MissionClient.test.tsx
@@ -1609,7 +1609,7 @@ git commit -m "feat: wire up mission page voice loop with touch support and min-
 - Consumes: `supabase/migrations/0001_init.sql` from Task 2; requires a real (local or hosted) Supabase project with the migration applied — this test hits actual Postgres via RLS, not a mock, since RLS is a database-enforced guarantee that mocks can't verify
 - Produces: automated proof that Parent A cannot read or write Parent B's `children` or `mission_progress` rows
 
-- [ ] **Step 1: Document required test environment variables**
+- [x] **Step 1: Document required test environment variables**
 
 `.env.test.example`:
 ```
@@ -1619,7 +1619,7 @@ SUPABASE_TEST_ANON_KEY=
 
 Note: point these at a local Supabase instance (`supabase start`) or a disposable test project — never a production project, since this test creates and deletes real auth users.
 
-- [ ] **Step 2: Write the RLS isolation test**
+- [x] **Step 2: Write the RLS isolation test**
 
 `tests/supabase/rls.test.ts`:
 ```typescript
@@ -1689,12 +1689,12 @@ describeIfConfigured("RLS: cross-parent isolation", () => {
 });
 ```
 
-- [ ] **Step 3: Run the test against a local or test Supabase project**
+- [x] **Step 3: Run the test against a local or test Supabase project**
 
 Run: `SUPABASE_TEST_URL=... SUPABASE_TEST_ANON_KEY=... npm test -- tests/supabase/rls.test.ts`
 Expected: PASS, 3 tests. If `SUPABASE_TEST_URL`/`SUPABASE_TEST_ANON_KEY` are unset, the suite is skipped (visible as "skipped" in test output) rather than failing — this keeps `npm test` green in environments without a live Supabase project, while still giving anyone with credentials a real gate to run before deploying the RLS policies from Task 2.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add tests/supabase/rls.test.ts .env.test.example
@@ -1711,20 +1711,20 @@ git commit -m "test: add RLS cross-parent isolation test"
 **Interfaces:**
 - Consumes: all components from Tasks 7-10 (visual-only changes, no interface/signature changes)
 
-- [ ] **Step 1: Invoke the impeccable skill for a design pass**
+- [x] **Step 1: Invoke the impeccable skill for a design pass**
 
 Run the `impeccable` skill against the current UI (login, profiles, mission pages) to apply the "Full Tactical" aesthetic: scanlines, HUD-mask borders, terminal-reveal typewriter effect on `MissionTranscript`, and the "System Reboot" scanline-wipe transition on rank-up (`ranked_up === true` from the mission-turn response). Follow the skill's own process for this pass — it may ask clarifying questions about density/motion before editing files.
 
-- [ ] **Step 2: Verify no interface changes broke existing tests**
+- [x] **Step 2: Verify no interface changes broke existing tests**
 
 Run: `npm test`
 Expected: all prior tests (Tasks 3-11) still PASS — this task is visual-only.
 
-- [ ] **Step 3: Manual check in browser**
+- [x] **Step 3: Manual check in browser**
 
 Run: `npm run dev`, click through login → profiles → mission, confirm scanline/terminal-reveal effects render and don't break the Hold-to-Talk interaction. Stop the dev server after.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add -A
@@ -1743,43 +1743,51 @@ git commit -m "style: apply Full Tactical design pass to Cadet experience"
 
 This task is the explicit go/no-go gate for the plan. Every item below must be checked off — by actually performing the action and observing the result, not by inference from earlier tasks passing — before this plan is considered done. Requires a real `.env.local` with `GROQ_API_KEY` and Supabase credentials, and the Task 2 migration applied to that Supabase project.
 
-- [ ] **Step 1: Run the full automated test suite one final time**
+- [x] **Step 1: Run the full automated test suite one final time**
 
 Run: `npm test`
 Expected: all tests PASS (RLS test from Task 11 will skip unless `SUPABASE_TEST_URL`/`SUPABASE_TEST_ANON_KEY` are set — if so, also run it explicitly per Task 11 Step 3 and confirm it passes for real before checking this off).
 
-- [ ] **Step 2: Voice loop end-to-end, mouse**
+- [x] **Step 2: Voice loop end-to-end, mouse**
 
 `npm run dev` → sign up → create child profile → select profile with correct PIN → land on `/mission` → hold "Hold to Talk" with mouse, speak, release. Confirm: transcript shows both the Orb's response, Orb visibly pulses while held, audio plays back.
 
-- [ ] **Step 3: Voice loop end-to-end, touch**
+- [x] **Step 3: Voice loop end-to-end, touch**
 
 Repeat Step 2 using touch input (real touch device or browser device-emulation mode). Confirm identical behavior to mouse.
 
-- [ ] **Step 4: Accidental-tap guard**
+- [x] **Step 4: Accidental-tap guard**
 
 Tap-and-immediately-release "Hold to Talk" (well under 300ms). Confirm: no request is sent, no turn is added to the transcript, no crash.
 
-- [ ] **Step 5: Mic-denied fallback**
+- [x] **Step 5: Mic-denied fallback**
 
 Deny microphone permission (via browser site settings) and reload `/mission`. Confirm: "Hold to Talk" is replaced by "Option A"/"Option B" tap buttons, and tapping one produces an Orb response.
 
-- [ ] **Step 6: PIN mismatch**
+- [x] **Step 6: PIN mismatch**
 
 From `/profiles`, select a child profile and enter an incorrect PIN. Confirm: an in-character error message appears, no redirect to `/mission` occurs.
 
-- [ ] **Step 7: Rank persists across a page refresh**
+- [x] **Step 7: Rank persists across a page refresh**
 
 Complete enough mission turns to trigger a rank-up (Orb response should eventually include a rank increase). Refresh `/mission`. Confirm: the displayed rank matches the post-rank-up value, not the original starting rank.
 
-- [ ] **Step 8: AI failure fallback**
+- [x] **Step 8: AI failure fallback**
 
 Temporarily set `GROQ_API_KEY` to an invalid value, attempt a mission turn, confirm the in-character fallback line appears instead of a crash or raw error. Restore the valid key afterward.
 
-- [ ] **Step 9: Visual pass didn't regress interaction**
+- [x] **Step 9: Visual pass didn't regress interaction**
 
 With the Task 12 design pass applied, repeat Step 2 (mouse voice loop) once more and confirm scanline/terminal-reveal effects render without blocking or delaying the Hold-to-Talk interaction.
 
-- [ ] **Step 10: Sign off**
+- [x] **Step 10: Sign off**
 
 Once all steps above are checked, this plan is complete. If any step fails, do not check it off — file it as a follow-up task or fix before considering the Core Cadet Experience MVP done.
+
+---
+
+**Completed 2026-09-07.** Running the checklist surfaced two real bugs outside the plan's original scope, both fixed before sign-off:
+- `llama-3.3-70b-versatile` and `playai-tts` had been decommissioned by Groq, so every mission turn was silently hitting the fallback line. Swapped to `openai/gpt-oss-120b` and `canopylabs/orpheus-v1-english` (voice `daniel`), and added server-side error logging to `app/api/mission-turn` so a future model deprecation doesn't go unnoticed again.
+- `app/mission/page.tsx` never read back stored rank from `getMissionProgress`, so a page refresh always showed a blank rank regardless of actual progress. Now passes `initialRank` into `MissionClient`.
+
+Also fixed a pre-existing test-suite failure (`window.matchMedia` missing from jsdom, needed by `CommandOrb`'s reduced-motion support).
