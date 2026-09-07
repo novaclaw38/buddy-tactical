@@ -13,7 +13,7 @@ export type MissionBeat = z.infer<typeof missionBeatSchema>;
 export async function generateMissionBeat(context: MissionContext): Promise<MissionBeat> {
   const groq = getGroqClient();
   const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-120b",
     messages: [{ role: "user", content: buildMissionPrompt(context) }],
     response_format: { type: "json_object" },
   });

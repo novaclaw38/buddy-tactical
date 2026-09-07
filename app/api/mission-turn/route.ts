@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     const speech = await withOneRetry(() => synthesizeSpeech(orbText));
     audioBase64 = speech.toString("base64");
     succeeded = true;
-  } catch {
+  } catch (error) {
+    console.error("mission-turn failed, falling back to canned response", error);
     orbText = FALLBACK_TEXT;
     rankDelta = 0;
     missionComplete = false;
